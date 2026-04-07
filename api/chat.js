@@ -1,4 +1,12 @@
 export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -11,11 +19,7 @@ export default async function handler(req, res) {
       body: JSON.stringify(body),
     });
     const data = await response.json();
-    if (data.error) {
-      res.status(400).json(data);
-    } else {
-      res.status(200).json(data);
-    }
+    res.status(200).json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
