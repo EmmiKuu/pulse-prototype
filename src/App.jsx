@@ -694,7 +694,7 @@ function ChatScreen({week,memory,onMemoryUpdate}){
     const toneInstr=memory.tone?.includes("facts")?"Be direct and concise.":memory.tone?.includes("accountable")?"Be energetic and motivating.":"Be warm and conversational like a supportive friend.";
     const extra=systemExtra||"";
     try{
-      const res=await fetch("https://api.chat",{
+      const res=await fetch("/api/chat",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
