@@ -694,7 +694,7 @@ function ChatScreen({week,memory,onMemoryUpdate}){
     const toneInstr=memory.tone?.includes("facts")?"Be direct and concise.":memory.tone?.includes("accountable")?"Be energetic and motivating.":"Be warm and conversational like a supportive friend.";
     const extra=systemExtra||"";
     try{
-      const res=await fetch("/api/chat",{
+      const res=await fetch("https://api.anthropic.com/v1/messages",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
@@ -747,7 +747,10 @@ function ChatScreen({week,memory,onMemoryUpdate}){
       const reply=await callAPI(text,"Lisa just started Week 1 of a health program. She shared how she honestly feels about it. Respond warmly and specifically to what she said. Do NOT mention BP trends, streaks, or any progress data — she has just started. End on a brief encouraging note. This is the last message of Week 1.");
       setApiLoading(false);
       q(...ps(reply,300));
-      cs.current="idle";
+      cs.current="w1_done";
+      return;
+    }
+    if(state==="w1_done"){
       return;
     }
     if(state==="w2_correction"){
